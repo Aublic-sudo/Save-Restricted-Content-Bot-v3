@@ -120,8 +120,8 @@ async def process_audio(client, event, url, cookies_env_var=None):
                 except Exception:
                     pass
                 audio_file.tags["TIT2"] = TIT2(encoding=3, text=title)
-                audio_file.tags["TPE1"] = TPE1(encoding=3, text="Team SPY")
-                audio_file.tags["COMM"] = COMM(encoding=3, lang="eng", desc="Comment", text="Processed by Team SPY")
+                audio_file.tags["TPE1"] = TPE1(encoding=3, text="Aublicx_Robot")
+                audio_file.tags["COMM"] = COMM(encoding=3, lang="eng", desc="Comment", text="Processed by Aublicx_Robot")
  
                 thumbnail_url = info_dict.get('thumbnail')
                 if thumbnail_url:
@@ -149,7 +149,7 @@ async def process_audio(client, event, url, cookies_env_var=None):
                 name=None,
                 progress_bar_function=lambda done, total: progress_callback(done, total, chat_id)
             )
-            await client.send_file(chat_id, uploaded, caption=f"**{title}**\n\n**__Powered by Team SPY__**")
+            await client.send_file(chat_id, uploaded, caption=f"**{title}**\n\n**__Powered by Aublicx_Robot__**")
             if prog:
                 await prog.delete()
         else:
@@ -303,7 +303,7 @@ def progress_callback(done, total, user_id):
         f"│ **__Speed:__** {speed_mbps:.2f} Mbps\n"
         f"│ **__Time Remaining:__** {remaining_time_min:.2f} min\n"
         f"╰──────────────────╯\n\n"
-        f"**__Powered by Team SPY__**"
+        f"**__Powered by Aublicx_Robot__**"
     )
  
      
@@ -354,7 +354,7 @@ async def process_video(client, event, url, cookies_env_var, check_duration_and_
             return
          
         await asyncio.to_thread(download_video, url, ydl_opts)
-        title = info_dict.get('title', 'Powered by Team SPY')
+        title = info_dict.get('title', 'Powered by Aublicx_Robot')
         k = await get_video_metadata(download_path)      
         W = k['width']
         H = k['height']
