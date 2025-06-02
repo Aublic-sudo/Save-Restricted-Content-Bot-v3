@@ -37,12 +37,12 @@ a5 = "c3RhcnQ="
 attr1 = "cGhvdG8="
 attr2 = "ZmlsZV9pZA=="
 
-# New welcome message (base64 encoded)
-a7 = "SGVsbG8g8J+agCB7dXNlcn0hIFdlbGNvbWUgdG8geW91ciB1bHRpbWF0ZSBjb250ZW50IHNhdmVyIGJvdCEg8J+QnPCfkJQKCgrwn5GPIEkgbGV0IHlvdSBzYXZlIHBvc3RzIGZyb20gVGVsZWdyYW0gY2hhbm5lbHMgJiBncm91cHMgdGhhdCBoYXZlIGZvcndhcmRpbmcgcmVzdHJpY3Rpb25zLCBhbmQgZG93bmxvYWQgdmlkZW9zIG9yIGF1ZGlvIGZyb20gWW91VHViZSwgSW5zdGFncmFtLCBhbmQgbW9yZS4K8J+TjCBKdXN0IHNlbmQgdGhlIGxpbmsgb2YgYW55IHB1YmxpYyBjaGFubmVsIHBvc3QuIEZvciBwcml2YXRlIGNoYW5uZWxzLCB1c2UgL2xvZ2luLiBGb3IgbW9yZSBkZXRhaWxzLCBzZW5kIC9oZWxwLgoK8J+QiCBHaXZlIG1lIGEgdHJ5IGFuZCBleHBlcmllbmNlIGZhc3QsIGVhc3kgc2F2aW5nIQ=="
+# New welcome message (base64 encoded). Use {user} and in code use .format(user=message.from_user.first_name)
+a7 = "SGVsbG8g8J+agCB7dXNlcn0hIFdlbGNvbWUgdG8geW91ciB1bHRpbWF0ZSBjb250ZW50IHNhdmVyIGJvdCEg8J+QjPCfkI0KCgrwn5iNIElgbGV0IHlvdSBzYXZlIHBvc3RzIGZyb20gVGVsZWdyYW0gY2hhbm5lbHMgJiBncm91cHMgdGhhdCBoYXZlIGZvcndhcmRpbmcgcmVzdHJpY3Rpb25zLCBhbmQgZG93bmxvYWQgdmlkZW9zIG9yIGF1ZGlvIGZyb20gWW91VHViZSwgSW5zdGFncmFtLCBhbmQgbW9yZS4K8J+YnCBKdXN0IHNlbmQgdGhlIGxpbmsgb2YgYW55IHB1YmxpYyBjaGFubmVsIHBvc3QuIEZvciBwcml2YXRlIGNoYW5uZWxzLCB1c2UgL2xvZ2luLiBGb3IgbW9yZSBkZXRhaWxzLCBzZW5kIC9oZWxwLgoK8J+QmCBHaXZlIG1lIGEgdHJ5IGFuZCBleHBlcmllbmNlIGZhc3QsIGVhc3kgc2F2aW5n"
 
-# Thumbnail (base64 of "https://i.ibb.co/k69PB5ng/6188088842154789666-99.jpg")
+# Thumbnail (your link)
 a10 = "aHR0cHM6Ly9pLmliYi5jby9rNjlQQjVuZy82MTg4MDg4ODQyMTU0Nzg5NjY2LTk5LmpwZw=="
-a11 = "aHR0cHM6Ly90Lm1lL0F1YmxpYw=="
+a11 = "aHR0cHM6Ly9pLmliYi5jby9rNjlQQjVuZy82MTg4MDg4ODQyMTU0Nzg5NjY2LTk5LmpwZw=="
 
 a8 = "Sm9pbiBDaGFubmVs"
 a9 = "R2V0IFByZW1pdW0="
