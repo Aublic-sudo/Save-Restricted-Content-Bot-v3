@@ -1,4 +1,4 @@
-\# Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
+# Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
 # Licensed under the GNU General Public License v3.0.  
 # See LICENSE file in the repository root for full license text.
 
@@ -25,9 +25,7 @@ async def main():
         await asyncio.sleep(1)  
 
 if __name__ == "__main__":
-    # Use a new event loop for modern asyncio (Python 3.10+ safe)
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
+    loop = asyncio.get_event_loop()
     print("Starting clients ...")
     try:
         loop.run_until_complete(main())
