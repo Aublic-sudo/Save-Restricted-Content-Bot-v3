@@ -31,16 +31,21 @@ codedb = db["redeem_code"]
 
 a1 = "c2F2ZV9yZXN0cmljdGVkX2NvbnRlbnRfYm90cw=="
 a2 = "Nzk2"
-a3 = "Z2V0X21lc3NhZ2Vz" 
-a4 = "cmVwbHlfcGhvdG8=" 
+a3 = "Z2V0X21lc3NhZ2Vz"
+a4 = "cmVwbHlfcGhvdG8="
 a5 = "c3RhcnQ="
 attr1 = "cGhvdG8="
 attr2 = "ZmlsZV9pZA=="
-a7 = "SGkg8J+RiyBXZWxjb21lLCBXYW5uYSBpbnRyby4uLj8gCgrinLPvuI8gSSBjYW4gc2F2ZSBwb3N0cyBmcm9tIGNoYW5uZWxzIG9yIGdyb3VwcyB3aGVyZSBmb3J3YXJkaW5nIGlzIG9mZi4gSSBjYW4gZG93bmxvYWQgdmlkZW9zL2F1ZGlvIGZyb20gWVQsIElOU1RBLCAuLi4gc29jaWFsIHBsYXRmb3JtcwrinLPvuI8gU2ltcGx5IHNlbmQgdGhlIHBvc3QgbGluayBvZiBhIHB1YmxpYyBjaGFubmVsLiBGb3IgcHJpdmF0ZSBjaGFubmVscywgZG8gL2xvZ2luLiBTZW5kIC9oZWxwIHRvIGtub3cgbW9yZS4="
+
+# New welcome message (base64 encoded)
+a7 = "SGVsbG8g8J+agCB7dXNlcn0hIFdlbGNvbWUgdG8geW91ciB1bHRpbWF0ZSBjb250ZW50IHNhdmVyIGJvdCEg8J+QnPCfkJQKCgrwn5GPIEkgbGV0IHlvdSBzYXZlIHBvc3RzIGZyb20gVGVsZWdyYW0gY2hhbm5lbHMgJiBncm91cHMgdGhhdCBoYXZlIGZvcndhcmRpbmcgcmVzdHJpY3Rpb25zLCBhbmQgZG93bmxvYWQgdmlkZW9zIG9yIGF1ZGlvIGZyb20gWW91VHViZSwgSW5zdGFncmFtLCBhbmQgbW9yZS4K8J+TjCBKdXN0IHNlbmQgdGhlIGxpbmsgb2YgYW55IHB1YmxpYyBjaGFubmVsIHBvc3QuIEZvciBwcml2YXRlIGNoYW5uZWxzLCB1c2UgL2xvZ2luLiBGb3IgbW9yZSBkZXRhaWxzLCBzZW5kIC9oZWxwLgoK8J+QiCBHaXZlIG1lIGEgdHJ5IGFuZCBleHBlcmllbmNlIGZhc3QsIGVhc3kgc2F2aW5nIQ=="
+
+# Thumbnail (base64 of "https://i.ibb.co/k69PB5ng/6188088842154789666-99.jpg")
+a10 = "aHR0cHM6Ly9pLmliYi5jby9rNjlQQjVuZy82MTg4MDg4ODQyMTU0Nzg5NjY2LTk5LmpwZw=="
+a11 = "aHR0cHM6Ly90Lm1lL0F1YmxpYw=="
+
 a8 = "Sm9pbiBDaGFubmVs"
-a9 = "R2V0IFByZW1pdW0=" 
-a10 = "aHR0cHM6Ly90Lm1lL3RlYW1fc3B5X3Bybw==" 
-a11 = "aHR0cHM6Ly90Lm1lL2tpbmdvZnBhdGFs" 
+a9 = "R2V0IFByZW1pdW0="
 
 # ------- < end > Session Encoder don't change --------
 
