@@ -32,7 +32,7 @@ async def subscribe(app, message):
 @app.on_message(filters.command("set"))
 async def set(_, message):
     if message.from_user.id not in OWNER_ID:
-        await message.reply("You are not authorized to use this command.")
+        await message.reply("❌ You are not authorized to use this command.")
         return
 
     await app.set_bot_commands([
@@ -51,10 +51,16 @@ async def set(_, message):
         BotCommand("settings", "⚙️ Personalize things"),
         BotCommand("help", "❓ If you're a noob, still!"),
         BotCommand("cancel", "🚫 Cancel login/batch/settings process"),
-        BotCommand("stop", "🚫 Cancel batch process")
+        BotCommand("stop", "🚫 Cancel batch process"),
+        BotCommand("get", "📄 Get all user IDs (owner)"),
+        BotCommand("lock", "🔒 Lock channel (owner)"),
+        BotCommand("stats", "📊 Bot statistics"),
+        BotCommand("speedtest", "⚡ Check speed"),
+        BotCommand("myplan", "💎 View plan details"),
+        BotCommand("session", "🔐 Generate session string")
     ])
 
-    await message.reply("✅ Commands configured successfully!")
+    await message.reply("✅ All commands configured successfully!")
 
 # Help Pagination
 help_pages = [
