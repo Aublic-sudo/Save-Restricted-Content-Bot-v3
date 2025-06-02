@@ -79,16 +79,12 @@ async def start_handler(client, message):
 
     b7 = spy.b64decode(a8).decode()
     b8 = spy.b64decode(a9).decode()
-
-    # Decode welcome message and thumbnail link
     welcome_text = spy.b64decode(a7).decode().format(user=message.from_user.first_name)
     photo_url = spy.b64decode(a10).decode()
-
     kb = IKM([
         [IK(b7, url=JL)],
         [IK(b8, url=AC)]
     ])
-
     await message.reply_photo(
         photo=photo_url,
         caption=welcome_text,
