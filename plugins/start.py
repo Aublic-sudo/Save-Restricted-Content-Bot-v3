@@ -1,86 +1,36 @@
+
 # Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
 # Licensed under the GNU General Public License v3.0.  
 # See LICENSE file in the repository root for full license text.
 
-from pyrogram import Client, filters, errors
-from pyrogram.types import BotCommand, InlineKeyboardButton, InlineKeyboardMarkup
-from pyrogram.errors import UserNotParticipant
 from shared_client import app
+from pyrogram import filters
+from pyrogram.errors import UserNotParticipant
+from pyrogram.types import BotCommand, InlineKeyboardButton, InlineKeyboardMarkup
 from config import LOG_GROUP, OWNER_ID, FORCE_SUB
-
-# Add these imports for premium users retrieval
-from func import premium_users_collection, get_display_name
 
 async def subscribe(app, message):
     if FORCE_SUB:
         try:
-            user = await app.get_chat_member(FORCE_SUB, message.from_user.id)
-            if str(user.status) == "ChatMemberStatus.BANNED":
-                await message.reply_text("You are Banned. Contact -- @Aublic")
-                return 1
+          user = await app.get_chat_member(FORCE_SUB, message.from_user.id)
+          if str(user.status) == "ChatMemberStatus.BANNED":
+              await message.reply_text("You are Banned. Contact -- Team SPY")
+              return 1
         except UserNotParticipant:
             link = await app.export_chat_invite_link(FORCE_SUB)
             caption = f"Join our channel to use the bot"
-            await message.reply_photo(
-                photo="https://graph.org/file/d44f024a08ded19452152.jpg",
-                caption=caption,
-                reply_markup=InlineKeyboardMarkup(
-                    [[InlineKeyboardButton("Join Now...", url=f"{link}")]]
-                )
-            )
+            await message.reply_photo(photo="https://graph.org/file/d44f024a08ded19452152.jpg",caption=caption, reply_markup=InlineKeyboardMarkup([[InlineKeyboardButton("Join Now...", url=f"{link}")]]))
             return 1
         except Exception as ggn:
             await message.reply_text(f"Something Went Wrong. Contact admins... with following message {ggn}")
             return 1 
-
-
+     
 @app.on_message(filters.command("set"))
 async def set(_, message):
     if message.from_user.id not in OWNER_ID:
         await message.reply("You are not authorized to use this command.")
         return
-
-
-@app.on_message(filters.command("get"))
-async def get_users(client, message):
-    # Authorization check
-    if isinstance(OWNER_ID, list):
-        if message.from_user.id not in OWNER_ID:
-            return await message.reply("🚫 You are not authorized.")
-    else:
-        if message.from_user.id != OWNER_ID:
-            return await message.reply("🚫 You are not authorized.")
-
-    try:
-        users = await premium_users_collection.find().to_list(length=1000)
-        if not users:
-            return await message.reply("❌ No premium users found.")
-
-        text_lines = []
-        for user in users:
-            user_id = user["user_id"]
-            try:
-                user_entity = await app.get_users(user_id)
-                name = get_display_name(user_entity)
-                username = f"@{user_entity.username}" if user_entity.username else "NoUsername"
-                line = f"{name} ({username}) - `{user_id}`"
-            except Exception:
-                line = f"Unknown - `({user_id})`"
-            text_lines.append(line)
-
-        final_text = f"👥 Total Premium Users: {len(text_lines)}\n\n" + "\n".join(text_lines)
-
-        if len(final_text) > 4000:
-            with open("premium_users.txt", "w", encoding="utf-8") as f:
-                f.write(final_text)
-            await message.reply_document("premium_users.txt", caption="📄 Premium User List")
-        else:
-            await message.reply(final_text)
-
-    except Exception as e:
-        await message.reply(f"❌ Error while fetching users: {str(e)}")     
-
-
+     
     await app.set_bot_commands([
         BotCommand("start", "🚀 Start the bot"),
         BotCommand("batch", "🫠 Extract in bulk"),
@@ -101,10 +51,12 @@ async def get_users(client, message):
         BotCommand("cancel", "🚫 Cancel login/batch/settings process"),
         BotCommand("stop", "🚫 Cancel batch process")
     ])
-
+ 
     await message.reply("✅ Commands configured successfully!")
-
-
+ 
+ 
+ 
+ 
 help_pages = [
     (
         "📝 **Bot Commands Overview (1/2)**:\n\n"
@@ -152,52 +104,61 @@ help_pages = [
         "> 4. REPLACEWORDS : Can be used for words in deleted set via REMOVE WORDS\n"
         "> 5. RESET : To set the things back to default\n\n"
         "> You can set CUSTOM THUMBNAIL, PDF WATERMARK, VIDEO WATERMARK, SESSION-based login, etc. from settings\n\n"
-        "**__Powered by Aublicx_Robot__**"
+        "**__Powered by Team SPY__**"
     )
 ]
-
-
+ 
+ 
 async def send_or_edit_help_page(_, message, page_number):
     if page_number < 0 or page_number >= len(help_pages):
         return
-
+ 
+     
     prev_button = InlineKeyboardButton("◀️ Previous", callback_data=f"help_prev_{page_number}")
     next_button = InlineKeyboardButton("Next ▶️", callback_data=f"help_next_{page_number}")
-
+ 
+     
     buttons = []
     if page_number > 0:
         buttons.append(prev_button)
     if page_number < len(help_pages) - 1:
         buttons.append(next_button)
-
+ 
+     
     keyboard = InlineKeyboardMarkup([buttons])
-
+ 
+     
     await message.delete()
-
+ 
+     
     await message.reply(
         help_pages[page_number],
         reply_markup=keyboard
     )
-
-
+ 
+ 
 @app.on_message(filters.command("help"))
 async def help(client, message):
     join = await subscribe(client, message)
     if join == 1:
         return
-
+     
     await send_or_edit_help_page(client, message, 0)
-
-
+ 
+ 
 @app.on_callback_query(filters.regex(r"help_(prev|next)_(\d+)"))
 async def on_help_navigation(client, callback_query):
     action, page_number = callback_query.data.split("_")[1], int(callback_query.data.split("_")[2])
-
+ 
     if action == "prev":
         page_number -= 1
     elif action == "next":
         page_number += 1
 
     await send_or_edit_help_page(client, callback_query.message, page_number)
-
+     
     await callback_query.answer()
+
+ 
+
+ 
