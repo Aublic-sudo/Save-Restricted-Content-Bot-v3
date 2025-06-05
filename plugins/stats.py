@@ -175,4 +175,4 @@ async def remove_premium_handler(event):
     except Exception as e:
         logger.error(f'Error removing premium from {target_user_id}: {e}')
         await event.respond(f'❌ Error removing premium: {str(e)}')
-        return  
+        return
