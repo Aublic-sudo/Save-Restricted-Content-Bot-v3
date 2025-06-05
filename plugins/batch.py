@@ -231,7 +231,7 @@ async def process_msg(c, u, m, d, lt, uid, i):
             elif m.document:
                 c_name = sanitize(m.document.file_name)
 
-            f = await u.download_media(m, file_name=c_name, progress=prog, progress_args=(sender, lg, p.id, st))
+            f = await u.download_media(m, progress=prog, progress_args=(c, d, p.id, st))
             
             if not f:
                 await c.edit_message_text(d, p.id, 'Failed.')
