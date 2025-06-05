@@ -25,4 +25,3 @@ async def start_client():
     await app.start()
     print("Pyro App Started...")
     return client, app, userbot
-
