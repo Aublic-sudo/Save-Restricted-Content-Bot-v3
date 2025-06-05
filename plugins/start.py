@@ -29,7 +29,43 @@ async def set(_, message):
     if message.from_user.id not in OWNER_ID:
         await message.reply("You are not authorized to use this command.")
         return
-     
+@app.on_message(filters.command("get"))
+async def get_users(client, message):
+    if isinstance(OWNER_ID, list):
+        if message.from_user.id not in OWNER_ID:
+            return await message.reply("🚫 You are not authorized.")
+    else:
+        if message.from_user.id != OWNER_ID:
+            return await message.reply("🚫 You are not authorized.")
+
+    try:
+        users = await premium_users_collection.find().to_list(length=1000)
+        if not users:
+            return await message.reply("❌ No premium users found.")
+
+        text_lines = []
+        for user in users:
+            user_id = user["user_id"]
+            try:
+                user_entity = await app.get_users(user_id)
+                name = get_display_name(user_entity)
+                username = f"@{user_entity.username}" if user_entity.username else "NoUsername"
+                line = f"{name} ({username}) - `{user_id}`"
+            except Exception:
+                line = f"Unknown - `({user_id})`"
+            text_lines.append(line)
+
+        final_text = f"👥 Total Premium Users: {len(text_lines)}\n\n" + "\n".join(text_lines)
+
+        if len(final_text) > 4000:
+            with open("premium_users.txt", "w", encoding="utf-8") as f:
+                f.write(final_text)
+            await message.reply_document("premium_users.txt", caption="📄 Premium User List")
+        else:
+            await message.reply(final_text)
+
+    except Exception as e:
+        await message.reply(f"❌ Error while fetching users: {str(e)}")     
     await app.set_bot_commands([
         BotCommand("start", "🚀 Start the bot"),
         BotCommand("batch", "🫠 Extract in bulk"),
