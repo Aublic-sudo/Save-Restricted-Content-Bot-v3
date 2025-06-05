@@ -85,20 +85,26 @@ help_pages = [
         "> Logout from the bot\n\n"
         "11. **/stats**\n"
         "> Get bot stats\n\n"
-        "12. **/speedtest**\n"
+        "12. **/plan**\n"
+        "> Check premium plans\n\n"
+        "13. **/speedtest**\n"
         "> Test the server speed (not available in v3)\n\n"
-        "13. **/cancel**\n"
+        "14. **/terms**\n"
+        "> Terms and conditions\n\n"
+        "15. **/cancel**\n"
         "> Cancel ongoing batch process\n\n"
-         14. **/session**\n"
+        "16. **/myplan**\n"
+        "> Get details about your plans\n\n"
+        "17. **/session**\n"
         "> Generate Pyrogram V2 session\n\n"
-        "15. **/settings**\n"
+        "18. **/settings**\n"
         "> 1. SETCHATID : To directly upload in channel or group or user's dm use it with -100[chatID]\n"
         "> 2. SETRENAME : To add custom rename tag or username of your channels\n"
         "> 3. CAPTION : To add custom caption\n"
         "> 4. REPLACEWORDS : Can be used for words in deleted set via REMOVE WORDS\n"
         "> 5. RESET : To set the things back to default\n\n"
         "> You can set CUSTOM THUMBNAIL, PDF WATERMARK, VIDEO WATERMARK, SESSION-based login, etc. from settings\n\n"
-        "**__Powered by Aublic__**"
+        "**__Powered by Team SPY__**"
     )
 ]
  
@@ -154,5 +160,77 @@ async def on_help_navigation(client, callback_query):
     await callback_query.answer()
 
  
-
+@app.on_message(filters.command("terms") & filters.private)
+async def terms(client, message):
+    terms_text = (
+        "> 📜 **Terms and Conditions** 📜\n\n"
+        "✨ We are not responsible for user deeds, and we do not promote copyrighted content. If any user engages in such activities, it is solely their responsibility.\n"
+        "✨ Upon purchase, we do not guarantee the uptime, downtime, or the validity of the plan. __Authorization and banning of users are at our discretion; we reserve the right to ban or authorize users at any time.__\n"
+        "✨ Payment to us **__does not guarantee__** authorization for the /batch command. All decisions regarding authorization are made at our discretion and mood.\n"
+    )
+     
+    buttons = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton("📋 See Plans", callback_data="see_plan")],
+            [InlineKeyboardButton("💬 Contact Now", url="https://t.me/kingofpatal")],
+        ]
+    )
+    await message.reply_text(terms_text, reply_markup=buttons)
+ 
+ 
+@app.on_message(filters.command("plan") & filters.private)
+async def plan(client, message):
+    plan_text = (
+        "> 💰 **Premium Price**:\n\n Starting from $2 or 200 INR accepted via **__Amazon Gift Card__** (terms and conditions apply).\n"
+        "📥 **Download Limit**: Users can download up to 100,000 files in a single batch command.\n"
+        "🛑 **Batch**: You will get two modes /bulk and /batch.\n"
+        "   - Users are advised to wait for the process to automatically cancel before proceeding with any downloads or uploads.\n\n"
+        "📜 **Terms and Conditions**: For further details and complete terms and conditions, please send /terms.\n"
+    )
+     
+    buttons = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton("📜 See Terms", callback_data="see_terms")],
+            [InlineKeyboardButton("💬 Contact Now", url="https://t.me/kingofpatal")],
+        ]
+    )
+    await message.reply_text(plan_text, reply_markup=buttons)
+ 
+ 
+@app.on_callback_query(filters.regex("see_plan"))
+async def see_plan(client, callback_query):
+    plan_text = (
+        "> 💰**Premium Price**\n\n Starting from $2 or 200 INR accepted via **__Amazon Gift Card__** (terms and conditions apply).\n"
+        "📥 **Download Limit**: Users can download up to 100,000 files in a single batch command.\n"
+        "🛑 **Batch**: You will get two modes /bulk and /batch.\n"
+        "   - Users are advised to wait for the process to automatically cancel before proceeding with any downloads or uploads.\n\n"
+        "📜 **Terms and Conditions**: For further details and complete terms and conditions, please send /terms or click See Terms👇\n"
+    )
+     
+    buttons = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton("📜 See Terms", callback_data="see_terms")],
+            [InlineKeyboardButton("💬 Contact Now", url="https://t.me/kingofpatal")],
+        ]
+    )
+    await callback_query.message.edit_text(plan_text, reply_markup=buttons)
+ 
+ 
+@app.on_callback_query(filters.regex("see_terms"))
+async def see_terms(client, callback_query):
+    terms_text = (
+        "> 📜 **Terms and Conditions** 📜\n\n"
+        "✨ We are not responsible for user deeds, and we do not promote copyrighted content. If any user engages in such activities, it is solely their responsibility.\n"
+        "✨ Upon purchase, we do not guarantee the uptime, downtime, or the validity of the plan. __Authorization and banning of users are at our discretion; we reserve the right to ban or authorize users at any time.__\n"
+        "✨ Payment to us **__does not guarantee__** authorization for the /batch command. All decisions regarding authorization are made at our discretion and mood.\n"
+    )
+     
+    buttons = InlineKeyboardMarkup(
+        [
+            [InlineKeyboardButton("📋 See Plans", callback_data="see_plan")],
+            [InlineKeyboardButton("💬 Contact Now", url="https://t.me/kingofpatal")],
+        ]
+    )
+    await callback_query.message.edit_text(terms_text, reply_markup=buttons)
+ 
  
