@@ -89,4 +89,4 @@ async def start_handler(client, message):
         photo=photo_url,
         caption=welcome_text,
         reply_markup=kb
-    )  
+    )
