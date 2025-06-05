@@ -47,6 +47,54 @@ a11 = "aHR0cHM6Ly9pLmliYi5jby9rNjlQQjVuZy82MTg4MDg4ODQyMTU0Nzg5NjY2LTk5LmpwZw=="
 a8 = "Sm9pbiBDaGFubmVs"  # 
 a9 = "8J+RkU9XTkVS"
 
+# Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
+# Licensed under the GNU General Public License v3.0.  
+# See LICENSE file in the repository root for full license text.
+
+import concurrent.futures
+import time
+import os
+import re
+import cv2
+import logging
+import asyncio
+from datetime import datetime, timedelta
+from motor.motor_asyncio import AsyncIOMotorClient
+from config import MONGO_DB as MONGO_URI, DB_NAME
+
+logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+PUBLIC_LINK_PATTERN = re.compile(r'(https?://)?(t\.me|telegram\.me)/([^/]+)(/(\d+))?')
+PRIVATE_LINK_PATTERN = re.compile(r'(https?://)?(t\.me|telegram\.me)/c/(\d+)(/(\d+))?')
+VIDEO_EXTENSIONS = {"mp4", "mkv", "avi", "mov", "wmv", "flv", "webm", "mpeg", "mpg", "3gp"}
+
+mongo_client = AsyncIOMotorClient(MONGO_URI)
+db = mongo_client[DB_NAME]
+users_collection = db["users"]
+premium_users_collection = db["premium_users"]
+statistics_collection = db["statistics"]
+codedb = db["redeem_code"]
+
+# ------- < start > Session Encoder don't change -------
+
+a1 = "c2F2ZV9yZXN0cmljdGVkX2NvbnRlbnRfYm90cw=="
+a2 = "Nzk2"
+a3 = "Z2V0X21lc3NhZ2Vz"
+a4 = "cmVwbHlfcGhvdG8="
+a5 = "c3RhcnQ="
+attr1 = "cGhvdG8="
+attr2 = "ZmlsZV9pZA=="
+
+
+a7 = "SGVsbG8g8J+agCB7dXNlcn0hIFdlbGNvbWUgdG8geW91ciB1bHRpbWF0ZSBjb250ZW50IHNhdmVyIGJvdCEg8J+QjPCfkI0KCgrwn5iNIElgbGV0IHlvdSBzYXZlIHBvc3RzIGZyb20gVGVsZWdyYW0gY2hhbm5lbHMgJiBncm91cHMgdGhhdCBoYXZlIGZvcndhcmRpbmcgcmVzdHJpY3Rpb25zLCBhbmQgZG93bmxvYWQgdmlkZW9zIG9yIGF1ZGlvIGZyb20gWW91VHViZSwgSW5zdGFncmFtLCBhbmQgbW9yZS4K8J+YnCBKdXN0IHNlbmQgdGhlIGxpbmsgb2YgYW55IHB1YmxpYyBjaGFubmVsIHBvc3QuIEZvciBwcml2YXRlIGNoYW5uZWxzLCB1c2UgL2xvZ2luLiBGb3IgbW9yZSBkZXRhaWxzLCBzZW5kIC9oZWxwLgoK8J+QmCBHaXZlIG1lIGEgdHJ5IGFuZCBleHBlcmllbmNlIGZhc3QsIGVhc3kgc2F2aW5n"
+
+a10 = "aHR0cHM6Ly9pLmliYi5jby9rNjlQQjVuZy82MTg4MDg4ODQyMTU0Nzg5NjY2LTk5LmpwZw=="
+a11 = "aHR0cHM6Ly9pLmliYi5jby9rNjlQQjVuZy82MTg4MDg4ODQyMTU0Nzg5NjY2LTk5LmpwZw=="
+
+a8 = "8J+Up09XTkVS"  # 
+a9 = "R2V0IFByZW1pdW0="
+
 # ------- < end > Session Encoder don't change --------
 
 def is_private_link(link):
