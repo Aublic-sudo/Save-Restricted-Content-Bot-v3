@@ -157,3 +157,6 @@ async def on_help_navigation(client, callback_query):
     await send_or_edit_help_page(client, callback_query.message, page_number)
      
     await callback_query.answer()
+
+ 
+
