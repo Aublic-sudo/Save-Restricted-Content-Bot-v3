@@ -1,4 +1,3 @@
-main.py
 
 # Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
 # Licensed under the GNU General Public License v3.0.  
@@ -40,4 +39,4 @@ if __name__ == "__main__":
         try:
             loop.close()
         except Exception:
-            pass     
+            pass    
