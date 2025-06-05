@@ -74,7 +74,7 @@ Subscription valid until: {formatted_expiry} (IST)"""
         await event.respond(f'Error: {str(e)}')
 
 
-@app.on_message(filters.command("get"))
+@bot_client.on(filters.command("get"))
 async def get_users(client, message):
     if isinstance(OWNER_ID, list):
         if message.from_user.id not in OWNER_ID:
