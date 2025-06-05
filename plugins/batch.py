@@ -1,3 +1,4 @@
+
 # Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
 # Licensed under the GNU General Public License v3.0.  
 # See LICENSE file in the repository root for full license text.
@@ -231,7 +232,7 @@ async def process_msg(c, u, m, d, lt, uid, i):
             elif m.document:
                 c_name = sanitize(m.document.file_name)
 
-            f = await u.download_media(m, progress=prog, progress_args=(c, d, p.id, st))
+            f = await u.download_media(m, file_name=c_name, progress=prog, progress_args=(sender, lg, p.id, st))
             
             if not f:
                 await c.edit_message_text(d, p.id, 'Failed.')
