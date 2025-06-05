@@ -1,4 +1,3 @@
-
 # Copyright (c) 2025 Gagan : https://github.com/devgaganin.  
 # Licensed under the GNU General Public License v3.0.  
 # See LICENSE file in the repository root for full license text.
@@ -14,7 +13,6 @@ from config import OWNER_ID, JOIN_LINK as JL , ADMIN_CONTACT as AC
 import base64 as spy
 from utils.func import a1, a2, a3, a4, a5, a7, a8, a9, a10, a11
 from plugins.start import subscribe
-
 
 @bot_client.on(events.NewMessage(pattern='/add'))
 async def add_premium_handler(event):
@@ -79,28 +77,16 @@ async def start_handler(client, message):
     if subscription_status == 1:
         return
 
-    b1 = spy.b64decode(a1).decode()
-    b2 = int(spy.b64decode(a2).decode())
-    b3 = spy.b64decode(a3).decode()
-    b4 = spy.b64decode(a4).decode()
-    b6 = spy.b64decode(a7).decode()
     b7 = spy.b64decode(a8).decode()
     b8 = spy.b64decode(a9).decode()
-    b9 = spy.b64decode(a10).decode()
-    b10 = spy.b64decode(a11).decode()
-
-    tm = await getattr(app, b3)(b1, b2)
-
-    pb = getattr(tm, spy.b64decode(attr1.encode()).decode())
-    fd = getattr(pb, spy.b64decode(attr2.encode()).decode())
-
+    welcome_text = spy.b64decode(a7).decode().format(user=message.from_user.first_name)
+    photo_url = spy.b64decode(a10).decode()
     kb = IKM([
         [IK(b7, url=JL)],
         [IK(b8, url=AC)]
     ])
-
-    await getattr(message, b4)(
-        fd,
-        caption=b6,
+    await message.reply_photo(
+        photo=photo_url,
+        caption=welcome_text,
         reply_markup=kb
     )
