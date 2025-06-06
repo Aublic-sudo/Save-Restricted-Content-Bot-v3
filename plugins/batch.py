@@ -3,10 +3,11 @@
 # Licensed under the GNU General Public License v3.0.  
 # See LICENSE file in the repository root for full license text.
 
-import os, re, time, asyncio, json, asyncio 
+import os, re, time, asyncio, json, asyncio, random
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import UserNotParticipant
+from pyrogram.errors import FloodWait
 from config import API_ID, API_HASH, LOG_GROUP, STRING, FORCE_SUB, FREEMIUM_LIMIT, PREMIUM_LIMIT
 from utils.func import get_user_data, screenshot, thumbnail, get_video_metadata
 from utils.func import get_user_data_key, process_text_with_rules, is_premium_user, E
@@ -478,13 +479,19 @@ async def text_handler(c, m):
                         res = await process_msg(ubot, uc, msg, str(m.chat.id), lt, uid, i)
                         if 'Done' in res or 'Copied' in res or 'Sent' in res:
                             success += 1
-                    else:
-                        pass
+                except FloodWait as e:
+                    await pt.edit(f'FloodWait: Sleeping for {e.value}s')
+                    await asyncio.sleep(e.value)
                 except Exception as e:
-                    try: await pt.edit(f'{j+1}/{n}: Error - {str(e)[:30]}')
-                    except: pass
+                    try:
+                        await pt.edit(f'{j+1}/{n}: Error - {str(e)[:30]}')
+                    except:
+                        pass
+
+                await asyncio.sleep(random.uniform(2, 3))  # safer delay
+
                 
-                await asyncio.sleep(10)
+                
             
             if j+1 == n:
                 await m.reply_text(f'Batch Completed ✅ Success: {success}/{n}')
