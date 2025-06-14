@@ -332,31 +332,41 @@ async def process_msg(c, u, m, d, lt, uid, i):
 
 @X.on_message(filters.command(['batch', 'single']))
 async def process_cmd(c, m):
-    uid = m.from_user.id
-    cmd = m.command[0]
-    
-    if FREEMIUM_LIMIT == 0 and not await is_premium_user(uid):
-        await m.reply_text("This bot does not provide free servies, get subscription from OWNER")
+    uid = m.from_user.id if m.from_user else None
+    if not uid:
+        await m.reply_text("❌ User info not found.")
         return
-    
-    if await sub(c, m) == 1: return
+
+    cmd = m.command[0]
+
+    if FREEMIUM_LIMIT == 0 and not await is_premium_user(uid):
+        await m.reply_text("This bot does not provide free services, get subscription from OWNER")
+        return
+
+    if await sub(c, m) == 1:
+        return
+
     pro = await m.reply_text('Doing some checks hold on...')
-    
+
     if is_user_active(uid):
         await pro.edit('You have an active task. Use /stop to cancel it.')
         return
-    
+
     ubot = await get_ubot(uid)
     if not ubot:
         await pro.edit('Add your bot with /setbot first')
         return
-    
+
     Z[uid] = {'step': 'start' if cmd == 'batch' else 'start_single'}
-    await pro.edit(f'Send {"start link..." if cmd == "batch" else "link you to process"}.')
+    await pro.edit(f'Send {"start link..." if cmd == "batch" else "link you want to process"}.')
 
 @X.on_message(filters.command(['cancel', 'stop']))
 async def cancel_cmd(c, m):
-    uid = m.from_user.id
+    uid = m.from_user.id if m.from_user else None
+    if not uid:
+        await m.reply_text("❌ User info not found.")
+        return
+
     if is_user_active(uid):
         if await request_batch_cancel(uid):
             await m.reply_text('Cancellation requested. The current batch will stop after the current download completes.')
@@ -369,17 +379,15 @@ async def cancel_cmd(c, m):
     'start', 'batch', 'cancel', 'login', 'logout', 'stop', 'set', 
     'pay', 'redeem', 'gencode', 'single', 'generate', 'keyinfo', 'encrypt', 'decrypt', 'keys', 'setbot', 'rembot']))
 async def text_handler(c, m):
-    uid = m.from_user.id
-    if uid not in Z: return
-    s = Z[uid].get('step')
+    uid = m.from_user.id if m.from_user else None
+    if not uid or uid not in Z:
+        return
 
-    if s == 'start':
-        L = m.text
-        i, d, lt = E(L)
-        if not i or not d:
-            await m.reply_text('Invalid link format.')
-            Z.pop(uid, None)
-            return
+    s = Z[uid].get('step')
+    if not s:
+        await m.reply_text("❌ Step state not found.")
+        Z.pop(uid, None)
+        return
         Z[uid].update({'step': 'count', 'cid': i, 'sid': d, 'lt': lt})
         await m.reply_text('How many messages?')
 
