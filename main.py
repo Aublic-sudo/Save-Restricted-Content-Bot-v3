@@ -1,14 +1,29 @@
+# Auto install dependencies before bot starts
+import os
+import subprocess
+import sys
 
+def install_requirements():
+    flag_file = ".requirements_installed"
+    if not os.path.exists(flag_file):
+        print("[INFO] Installing dependencies from requirements.txt...")
+        try:
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "--no-cache-dir", "-r", "requirements.txt"])
+            open(flag_file, "w").close()
+            print("[INFO] Requirements installed successfully.")
+        except subprocess.CalledProcessError as e:
+            print(f"[ERROR] Failed to install requirements: {e}")
+            sys.exit(1)
+    else:
+        print("[INFO] Requirements already installed.")
 
-# Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
-# Licensed under the GNU General Public License v3.0.  
-# See LICENSE file in the repository root for full license text.
+install_requirements()
+
+# --------- Your original async bot starts here ---------
 
 import asyncio
 from shared_client import start_client
 import importlib
-import os
-import sys
 
 async def load_and_run_plugins():
     await start_client()
@@ -19,12 +34,12 @@ async def load_and_run_plugins():
         module = importlib.import_module(f"plugins.{plugin}")
         if hasattr(module, f"run_{plugin}_plugin"):
             print(f"Running {plugin} plugin...")
-            await getattr(module, f"run_{plugin}_plugin")()  
+            await getattr(module, f"run_{plugin}_plugin")()
 
 async def main():
     await load_and_run_plugins()
     while True:
-        await asyncio.sleep(1)  
+        await asyncio.sleep(1)
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
@@ -40,4 +55,4 @@ if __name__ == "__main__":
         try:
             loop.close()
         except Exception:
-            pass    
+            pass
