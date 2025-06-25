@@ -1,14 +1,11 @@
-
-
 # Copyright (c) 2025 devgagan : https://github.com/devgaganin.  
 # Licensed under the GNU General Public License v3.0.  
 # See LICENSE file in the repository root for full license text.
 
-import os, re, time, asyncio, json, asyncio, random
+import os, re, time, asyncio, json, asyncio 
 from pyrogram import Client, filters
 from pyrogram.types import Message
 from pyrogram.errors import UserNotParticipant
-from pyrogram.errors import FloodWait
 from config import API_ID, API_HASH, LOG_GROUP, STRING, FORCE_SUB, FREEMIUM_LIMIT, PREMIUM_LIMIT
 from utils.func import get_user_data, screenshot, thumbnail, get_video_metadata
 from utils.func import get_user_data_key, process_text_with_rules, is_premium_user, E
@@ -174,7 +171,7 @@ async def prog(c, t, C, h, m, st):
         bar = '🟢' * int(p / 10) + '🔴' * (10 - int(p / 10))
         speed = c / (time.time() - st) / (1024 * 1024) if time.time() > st else 0
         eta = time.strftime('%M:%S', time.gmtime((t - c) / (speed * 1024 * 1024))) if speed > 0 else '00:00'
-        await C.edit_message_text(h, m, f"__**Pyro Handler...**__\n\n{bar}\n\n⚡**__Completed__**: {c_mb:.2f} MB / {t_mb:.2f} MB\n📊 **__Done__**: {p:.2f}%\n🚀 **__Speed__**: {speed:.2f} MB/s\n⏳ **__ETA__**: {eta}\n\n**__Powered by Aublicx_Robot__**")
+        await C.edit_message_text(h, m, f"__**Pyro Handler...**__\n\n{bar}\n\n⚡**__Completed__**: {c_mb:.2f} MB / {t_mb:.2f} MB\n📊 **__Done__**: {p:.2f}%\n🚀 **__Speed__**: {speed:.2f} MB/s\n⏳ **__ETA__**: {eta}\n\n**__Powered by Team SPY__**")
         if p >= 100: P.pop(m, None)
 
 async def send_direct(c, m, tcid, ft=None, rtmid=None):
@@ -226,15 +223,28 @@ async def process_msg(c, u, m, d, lt, uid, i):
             
             st = time.time()
             p = await c.send_message(d, 'Downloading...')
-            
-            if m.video:
-                c_name = sanitize(m.video.file_name)
-            elif m.audio:
-                c_name = sanitize(m.audio.file_name)
-            elif m.document:
-                c_name = sanitize(m.document.file_name)
 
-            f = await u.download_media(m, file_name=c_name, progress=prog, progress_args=(sender, lg, p.id, st))
+            c_name = f"{time.time()}"
+            if m.video:
+                file_name = m.video.file_name
+                if not file_name:
+                    file_name = f"{time.time()}.mp4"
+                    c_name = sanitize(file_name)
+            elif m.audio:
+                file_name = m.audio.file_name
+                if not file_name:
+                    file_name = f"{time.time()}.mp3"
+                    c_name = sanitize(file_name)
+            elif m.document:
+                file_name = m.document.file_name
+                if not file_name:
+                    file_name = f"{time.time()}"
+                    c_name = sanitize(file_name)
+            elif m.photo:
+                file_name = f"{time.time()}.jpg"
+                c_name = sanitize(file_name)
+    
+            f = await u.download_media(m, file_name=c_name, progress=prog, progress_args=(c, d, p.id, st))
             
             if not f:
                 await c.edit_message_text(d, p.id, 'Failed.')
@@ -333,41 +343,31 @@ async def process_msg(c, u, m, d, lt, uid, i):
 
 @X.on_message(filters.command(['batch', 'single']))
 async def process_cmd(c, m):
-    uid = m.from_user.id if m.from_user else None
-    if not uid:
-        await m.reply_text("❌ User info not found.")
-        return
-
+    uid = m.from_user.id
     cmd = m.command[0]
-
+    
     if FREEMIUM_LIMIT == 0 and not await is_premium_user(uid):
-        await m.reply_text("This bot does not provide free services, get subscription from OWNER")
+        await m.reply_text("This bot does not provide free servies, get subscription from OWNER")
         return
-
-    if await sub(c, m) == 1:
-        return
-
+    
+    if await sub(c, m) == 1: return
     pro = await m.reply_text('Doing some checks hold on...')
-
+    
     if is_user_active(uid):
         await pro.edit('You have an active task. Use /stop to cancel it.')
         return
-
+    
     ubot = await get_ubot(uid)
     if not ubot:
         await pro.edit('Add your bot with /setbot first')
         return
-
+    
     Z[uid] = {'step': 'start' if cmd == 'batch' else 'start_single'}
-    await pro.edit(f'Send {"start link..." if cmd == "batch" else "link you want to process"}.')
+    await pro.edit(f'Send {"start link..." if cmd == "batch" else "link you to process"}.')
 
 @X.on_message(filters.command(['cancel', 'stop']))
 async def cancel_cmd(c, m):
-    uid = m.from_user.id if m.from_user else None
-    if not uid:
-        await m.reply_text("❌ User info not found.")
-        return
-
+    uid = m.from_user.id
     if is_user_active(uid):
         if await request_batch_cancel(uid):
             await m.reply_text('Cancellation requested. The current batch will stop after the current download completes.')
@@ -380,15 +380,17 @@ async def cancel_cmd(c, m):
     'start', 'batch', 'cancel', 'login', 'logout', 'stop', 'set', 
     'pay', 'redeem', 'gencode', 'single', 'generate', 'keyinfo', 'encrypt', 'decrypt', 'keys', 'setbot', 'rembot']))
 async def text_handler(c, m):
-    uid = m.from_user.id if m.from_user else None
-    if not uid or uid not in Z:
-        return
-
+    uid = m.from_user.id
+    if uid not in Z: return
     s = Z[uid].get('step')
-    if not s:
-        await m.reply_text("❌ Step state not found.")
-        Z.pop(uid, None)
-        return
+
+    if s == 'start':
+        L = m.text
+        i, d, lt = E(L)
+        if not i or not d:
+            await m.reply_text('Invalid link format.')
+            Z.pop(uid, None)
+            return
         Z[uid].update({'step': 'count', 'cid': i, 'sid': d, 'lt': lt})
         await m.reply_text('How many messages?')
 
@@ -488,19 +490,13 @@ async def text_handler(c, m):
                         res = await process_msg(ubot, uc, msg, str(m.chat.id), lt, uid, i)
                         if 'Done' in res or 'Copied' in res or 'Sent' in res:
                             success += 1
-                except FloodWait as e:
-                    await pt.edit(f'FloodWait: Sleeping for {e.value}s')
-                    await asyncio.sleep(e.value)
-                except Exception as e:
-                    try:
-                        await pt.edit(f'{j+1}/{n}: Error - {str(e)[:30]}')
-                    except:
+                    else:
                         pass
-
-                await asyncio.sleep(random.uniform(2, 3))  # safer delay
-
+                except Exception as e:
+                    try: await pt.edit(f'{j+1}/{n}: Error - {str(e)[:30]}')
+                    except: pass
                 
-                
+                await asyncio.sleep(10)
             
             if j+1 == n:
                 await m.reply_text(f'Batch Completed ✅ Success: {success}/{n}')
