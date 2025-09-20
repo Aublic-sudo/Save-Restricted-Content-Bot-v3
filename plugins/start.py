@@ -14,7 +14,7 @@ async def subscribe(app, message):
         try:
           user = await app.get_chat_member(FORCE_SUB, message.from_user.id)
           if str(user.status) == "ChatMemberStatus.BANNED":
-              await message.reply_text("You are Banned. Contact -- @Aublic")
+              await message.reply_text("You are Banned. Contact -- @lordRixie")
               return 1
         except UserNotParticipant:
             link = await app.export_chat_invite_link(FORCE_SUB)
@@ -104,7 +104,7 @@ help_pages = [
         "> 4. REPLACEWORDS : Can be used for words in deleted set via REMOVE WORDS\n"
         "> 5. RESET : To set the things back to default\n\n"
         "> You can set CUSTOM THUMBNAIL, PDF WATERMARK, VIDEO WATERMARK, SESSION-based login, etc. from settings\n\n"
-        "**__Powered by Aublicx_Robot__**"
+        "**__Powered by Rixiex_Robot__**"
     )
 ]
  
@@ -160,3 +160,4 @@ async def on_help_navigation(client, callback_query):
     await callback_query.answer()
 
  
+
