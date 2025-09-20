@@ -34,6 +34,7 @@ INSTA_COOKIES = os.getenv("INSTA_COOKIES", INST_COOKIES)
 FREEMIUM_LIMIT = int(os.getenv("FREEMIUM_LIMIT", "0"))
 PREMIUM_LIMIT = int(os.getenv("PREMIUM_LIMIT", "99999999"))
 JOIN_LINK = os.getenv("JOIN_LINK", "https://t.me/+QGmjZre_qPU2YmNl") # this link for start command message#
-ADMIN_CONTACT = os.getenv("ADMIN_CONTACT", "https://t.me/@lordRixie")
+ADMIN_CONTACT = os.getenv("ADMIN_CONTACT", "https://t.me/lordRixie")
+
 
 
